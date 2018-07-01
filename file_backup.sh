@@ -16,6 +16,7 @@ SMB_PASSWD="$6"
 LOG_FILE="backup.log"
 BACKUP_DATE=$(date +"%m-%d-%y")
 BACKUP_FILE="$MOUNT_DIR"/"$TASK_NAME"-backup-"$BACKUP_DATE".tar.gz
+BACKUP_AGE=7 # delete files older that this value
 
 ## check result of operation
 operation_result()
@@ -101,6 +102,10 @@ fi
 ## Create file shecksum for storage control
 sha1sum  "$BACKUP_FILE" > "$BACKUP_FILE".sha1 | tee -a "$LOG_FILE"
 operation_result $? "Create checksum"
+
+## Delete old backups
+find "$MOUNT_DIR" -mtime +"$BACKUP_AGE" -type f -delete  &>> "$LOG_FILE"
+operation_result $? "Check and delete old backups"
 
 ## Unmount smb share
 umount "$MOUNT_DIR"  &>> "$LOG_FILE"
