@@ -1,0 +1,37 @@
+# минимальный размер дискового пространства, необходимый для работы бекапа (в мб)
+MIN_SPACE=1000
+
+# имя задания резервного копирования 
+BP_TASK_NAME="wordpress_backup"
+
+# директории в которых идет работа
+BP_DUMP_PUTH="/home/nixadmin/backup"
+BP_TEMP_DIR="backup"
+
+# лог бекапа
+BP_LOG=$BP_DUMP_PUTH/"wp_backup.log"
+
+# параметры, касающиеся дампа базы данных
+DB_USER="root"
+DB_PASSWD="password"
+DB_NAME="wordpress"
+DB_DUMP_PUTH=$BP_DUMP_PUTH/$BP_TEMP_DIR
+DB_DUMP_NAME="wordpress"
+
+# параметры, касающиеся архивации каталога WP
+WP_FILE_DIR="/var/www/wordpress"
+WP_BCKP_PUTH=$BP_DUMP_PUTH/$BP_TEMP_DIR
+WP_BCKP_NAME="wp-file_arc"
+
+# параметры для слива бекапа по scp на удаленную машину
+SCP_PATH="/backup"
+SCP_IP="8.8.8.8."
+SCP_PORT="22"
+SCP_LOGIN="user"
+SCP_PSWD="password"
+
+# установка для раскраски вывода скрипта
+red=$(tput setf 4)
+green=$(tput setf 2)
+reset=$(tput sgr0)
+toend=$(tput hpa $(tput cols))$(tput cub 6)
